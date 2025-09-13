@@ -27,6 +27,17 @@ public class DBMSGuiApp extends JFrame {
         // Set modern look and feel
         try {
             UIManager.setLookAndFeel("com.formdev.flatlaf.FlatLightLaf");
+            // Customize colors for a more modern look
+            UIManager.put("Panel.background", new Color(248, 250, 252));
+            UIManager.put("Button.background", new Color(59, 130, 246));
+            UIManager.put("Button.foreground", Color.WHITE);
+            UIManager.put("Button.hoverBackground", new Color(37, 99, 235));
+            UIManager.put("TextField.background", Color.WHITE);
+            UIManager.put("TextArea.background", Color.WHITE);
+            UIManager.put("ComboBox.background", Color.WHITE);
+            UIManager.put("Table.background", Color.WHITE);
+            UIManager.put("TableHeader.background", new Color(241, 245, 249));
+            UIManager.put("TitledBorder.titleColor", new Color(31, 41, 55));
         } catch (Exception e) {
             try {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -36,8 +47,9 @@ public class DBMSGuiApp extends JFrame {
         }
 
         setTitle("DBMS GUI Application");
-        setSize(1000, 700);
+        setSize(1100, 750);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null); // Center the window on screen
         setLayout(new BorderLayout(10, 10)); // Add spacing
 
         // Set default larger font (2x normal size) for UI components only
@@ -52,18 +64,23 @@ public class DBMSGuiApp extends JFrame {
 
         // Initialize components
         queryArea = new JTextArea(5, 20);
-        executeButton = new JButton("Execute Query");
+        executeButton = new JButton("▶️ Execute Query");
         filterField = new JTextField(20);
-        filterButton = new JButton("Filter Results");
+        filterField.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(203, 213, 225), 1, true),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+        filterButton = new JButton("🔍 Filter Results");
         tableModel = new DefaultTableModel();
         resultTable = new JTable(tableModel);
         databaseComboBox = new JComboBox<>();
-        exportCsvButton = new JButton("Export to CSV");
+        databaseComboBox.setBorder(BorderFactory.createLineBorder(new Color(203, 213, 225), 1, true));
+        exportCsvButton = new JButton("📊 Export to CSV");
 
         // Add a large, bold title label at the top
-        titleLabel = new JLabel("DBMS GUI Application", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 28));
-        titleLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        titleLabel = new JLabel("🚀 DBMS GUI Application", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 32));
+        titleLabel.setForeground(new Color(31, 41, 55));
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
         add(titleLabel, BorderLayout.PAGE_START);
 
         // Database selection panel
@@ -85,7 +102,9 @@ public class DBMSGuiApp extends JFrame {
         topPanel.add(queryLabel);
         JScrollPane queryScroll = new JScrollPane(queryArea);
         queryScroll.setAlignmentX(Component.CENTER_ALIGNMENT);
-        queryScroll.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1, true));
+        queryScroll.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(203, 213, 225), 1, true),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         queryScroll.setPreferredSize(new Dimension(900, 80));
         topPanel.add(queryScroll);
 
@@ -129,12 +148,12 @@ public class DBMSGuiApp extends JFrame {
         resultTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         resultTable.setPreferredScrollableViewportSize(new Dimension(1000, 400));
         resultTable.setFillsViewportHeight(true);
-        resultTable.setRowHeight(24);
+        resultTable.setRowHeight(28);
         resultTable.setShowGrid(true);
-        resultTable.setGridColor(Color.LIGHT_GRAY);
-        resultTable.setIntercellSpacing(new Dimension(1, 1));
+        resultTable.setGridColor(new Color(226, 232, 240));
+        resultTable.setIntercellSpacing(new Dimension(2, 2));
         resultTable.getTableHeader().setReorderingAllowed(false);
-        resultTable.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1, true));
+        resultTable.setBorder(BorderFactory.createLineBorder(new Color(203, 213, 225), 1, true));
         resultTable.setToolTipText("Query results will appear here");
         bottomPanel.add(resultsScrollPane, BorderLayout.CENTER);
         bottomPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Results",
@@ -546,15 +565,23 @@ public class DBMSGuiApp extends JFrame {
             userComboBox = new JComboBox<>(users.toArray(new String[0]));
         }
         JTextField usernameField = new JTextField(20);
+        usernameField.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(203, 213, 225), 1, true),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
         JPasswordField passwordField = new JPasswordField(20);
-        JPanel panel = new JPanel(new GridLayout(3, 2));
-        panel.add(new JLabel("Username:"));
+        passwordField.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(203, 213, 225), 1, true),
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+        JPanel panel = new JPanel(new GridLayout(3, 2, 10, 10));
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        panel.add(new JLabel("👤 Username:"));
         if (userFetchFailed) {
             panel.add(usernameField);
         } else {
+            userComboBox.setBorder(BorderFactory.createLineBorder(new Color(203, 213, 225), 1, true));
             panel.add(userComboBox);
         }
-        panel.add(new JLabel("Password:"));
+        panel.add(new JLabel("🔒 Password:"));
         panel.add(passwordField);
 
         while (true) {
