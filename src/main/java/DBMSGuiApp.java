@@ -29,9 +29,12 @@ public class DBMSGuiApp extends JFrame {
             UIManager.setLookAndFeel("com.formdev.flatlaf.FlatLightLaf");
             // Customize colors for a more modern look
             UIManager.put("Panel.background", new Color(248, 250, 252));
-            UIManager.put("Button.background", new Color(59, 130, 246));
-            UIManager.put("Button.foreground", Color.WHITE);
-            UIManager.put("Button.hoverBackground", new Color(37, 99, 235));
+            // Override FlatLaf button defaults to allow custom colors
+            UIManager.put("Button.background", Color.LIGHT_GRAY);
+            UIManager.put("Button.foreground", Color.BLACK);
+            UIManager.put("Button.focusedBackground", Color.LIGHT_GRAY);
+            UIManager.put("Button.default.background", Color.LIGHT_GRAY);
+            UIManager.put("Button.default.foreground", Color.BLACK);
             UIManager.put("TextField.background", Color.WHITE);
             UIManager.put("TextArea.background", Color.WHITE);
             UIManager.put("ComboBox.background", Color.WHITE);
@@ -62,10 +65,12 @@ public class DBMSGuiApp extends JFrame {
         // Note: Table font will be handled separately for zoom functionality
         UIManager.put("Table.font", defaultFont);
 
-        // Initialize components
+        // Initialize components with custom colors (after UIManager setup)
         queryArea = new JTextArea(5, 20);
+        queryArea.setForeground(Color.BLACK); // Ensure query text is black
         executeButton = new JButton("▶️ Execute Query");
         filterField = new JTextField(20);
+        filterField.setForeground(Color.BLACK); // Ensure filter text is black
         filterField.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(203, 213, 225), 1, true),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)));
@@ -75,6 +80,32 @@ public class DBMSGuiApp extends JFrame {
         databaseComboBox = new JComboBox<>();
         databaseComboBox.setBorder(BorderFactory.createLineBorder(new Color(203, 213, 225), 1, true));
         exportCsvButton = new JButton("📊 Export to CSV");
+
+        // Apply button colors after all components are created
+        SwingUtilities.invokeLater(() -> {
+            executeButton.setBackground(new Color(34, 197, 94)); // Green for execute
+            executeButton.setForeground(Color.BLACK); // Make text black for visibility
+            executeButton.setFocusPainted(false);
+            executeButton.setOpaque(true);
+            executeButton.setBorder(BorderFactory.createEmptyBorder(8, 16, 8, 16));
+
+            filterButton.setBackground(new Color(251, 191, 36)); // Yellow for filter
+            filterButton.setForeground(Color.BLACK);
+            filterButton.setFocusPainted(false);
+            filterButton.setOpaque(true);
+            filterButton.setBorder(BorderFactory.createEmptyBorder(8, 16, 8, 16));
+
+            exportCsvButton.setBackground(new Color(239, 68, 68)); // Red for export
+            exportCsvButton.setForeground(Color.BLACK); // Make text black for visibility
+            exportCsvButton.setFocusPainted(false);
+            exportCsvButton.setOpaque(true);
+            exportCsvButton.setBorder(BorderFactory.createEmptyBorder(8, 16, 8, 16));
+
+            // Force repaint to ensure colors are applied
+            executeButton.repaint();
+            filterButton.repaint();
+            exportCsvButton.repaint();
+        });
 
         // Add a large, bold title label at the top
         titleLabel = new JLabel("🚀 DBMS GUI Application", SwingConstants.CENTER);
